@@ -193,13 +193,14 @@ namespace SharesightImporter.Exporter.SharesiesExporter
                     Price = double.Parse(trade.SharePrice),
                     TransactionDate = DateTimeOffset.FromUnixTimeMilliseconds(trade.TradeDatetime.Quantum),
                     Brokerage = double.Parse(trade.CorporateFee),
-                    Market = Instruments[transaction.FundId].Exchange,
+                    Market = Instruments.ContainsKey(transaction.FundId) ? Instruments[transaction.FundId].Exchange : null,
                     PortfolioId = int.Parse(_configuration.PortfolioId),
                     BrokerageCurrencyCode = transaction.Currency.ToUpper(),
-                    Symbol = Instruments[transaction.FundId].Symbol.ToUpper(),
+                    Symbol = Instruments.ContainsKey(transaction.FundId) ? Instruments[transaction.FundId].Symbol : null,
                     TransactionType = transactionType,
                     UniqueIdentifier = trade.ContractNoteNumber,
                 }));
+
             }
             else
             {
@@ -209,10 +210,10 @@ namespace SharesightImporter.Exporter.SharesiesExporter
                     Price = double.Parse(order.OrderUnitPrice),
                     TransactionDate = DateTimeOffset.FromUnixTimeMilliseconds(transaction.Timestamp.Quantum),
                     Brokerage = 0.00,
-                    Market = Instruments[transaction.FundId].Exchange,
+                    Market = Instruments.ContainsKey(transaction.FundId) ? Instruments[transaction.FundId].Exchange : null,
                     PortfolioId = int.Parse(_configuration.PortfolioId),
                     BrokerageCurrencyCode = transaction.Currency.ToUpper(),
-                    Symbol = Instruments[transaction.FundId].Symbol.ToUpper(),
+                    Symbol = Instruments.ContainsKey(transaction.FundId) ? Instruments[transaction.FundId].Symbol : null,
                     TransactionType = transactionType,
                     UniqueIdentifier = transaction.TransactionId.ToString(),
                 });
